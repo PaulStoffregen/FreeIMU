@@ -180,14 +180,14 @@ void ITG3200::readTemp(float *_Temp) {
   *_Temp = 35 + (((_buff[0] << 8) | _buff[1]) + 13200) / 280.0;    // F=C*9/5+32  
 }
 
-void ITG3200::readGyroRaw(int *_GyroX, int *_GyroY, int *_GyroZ){
+void ITG3200::readGyroRaw(int16_t *_GyroX, int16_t *_GyroY, int16_t *_GyroZ){
   readmem(GYRO_XOUT, 6, _buff);
   *_GyroX = (int16_t)((_buff[0] << 8) | _buff[1]);
   *_GyroY = (int16_t)((_buff[2] << 8) | _buff[3]);
   *_GyroZ = (int16_t)((_buff[4] << 8) | _buff[5]);
 }
 
-void ITG3200::readGyroRaw(int *_GyroXYZ){
+void ITG3200::readGyroRaw(int16_t *_GyroXYZ){
   readGyroRaw(_GyroXYZ, _GyroXYZ+1, _GyroXYZ+2);
 }
 
@@ -210,7 +210,7 @@ void ITG3200::setOffsets(int _Xoffset, int _Yoffset, int _Zoffset) {
 }
 
 void ITG3200::zeroCalibrate(unsigned int totSamples, unsigned int sampleDelayMS) {
-  int xyz[3]; 
+  int16_t xyz[3]; 
   float tmpOffsets[] = {0,0,0};
 
   for (int i = 0;i < totSamples;i++){
@@ -223,19 +223,19 @@ void ITG3200::zeroCalibrate(unsigned int totSamples, unsigned int sampleDelayMS)
   setOffsets(-tmpOffsets[0] / totSamples, -tmpOffsets[1] / totSamples, -tmpOffsets[2] / totSamples);
 }
 
-void ITG3200::readGyroRawCal(int *_GyroX, int *_GyroY, int *_GyroZ) {
+void ITG3200::readGyroRawCal(int16_t *_GyroX, int16_t *_GyroY, int16_t *_GyroZ) {
   readGyroRaw(_GyroX, _GyroY, _GyroZ);
   *_GyroX += offsets[0];
   *_GyroY += offsets[1];
   *_GyroZ += offsets[2];
 }
 
-void ITG3200::readGyroRawCal(int *_GyroXYZ) {
+void ITG3200::readGyroRawCal(int16_t *_GyroXYZ) {
   readGyroRawCal(_GyroXYZ, _GyroXYZ+1, _GyroXYZ+2);
 }
 
 void ITG3200::readGyro(float *_GyroX, float *_GyroY, float *_GyroZ){
-  int x, y, z;
+  int16_t x, y, z;
   
   readGyroRawCal(&x, &y, &z); // x,y,z will contain calibrated integer values from the sensor
   *_GyroX =  x / 14.375 * polarities[0] * gains[0];
