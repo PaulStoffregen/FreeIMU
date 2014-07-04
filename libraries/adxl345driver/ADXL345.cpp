@@ -40,12 +40,12 @@ void ADXL345::powerOn() {
 }
 
 // Reads the acceleration into an array of three places
-void ADXL345::readAccel(int16_t *xyz){
+void ADXL345::readAccel(int *xyz){
   readAccel(xyz, xyz + 1, xyz + 2);
 }
 
 // Reads the acceleration into three variable x, y and z
-void ADXL345::readAccel(int16_t *x, int16_t *y, int16_t *z) {
+void ADXL345::readAccel(int *x, int *y, int *z) {
   readFrom(ADXL345_DATAX0, TO_READ, _buff); //read the acceleration data from the ADXL345
 
   // each axis reading comes in 10 bit resolution, ie 2 bytes.  Least Significat Byte first!!
@@ -57,7 +57,7 @@ void ADXL345::readAccel(int16_t *x, int16_t *y, int16_t *z) {
 
 void ADXL345::get_Gxyz(float *xyz){
   int i;
-  int16_t xyz_int[3];
+  int xyz_int[3];
   readAccel(xyz_int);
   for(i=0; i<3; i++){
     xyz[i] = xyz_int[i] * gains[i];

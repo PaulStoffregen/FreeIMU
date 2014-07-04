@@ -54,12 +54,14 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   #define FREEIMU_FREQ "16 MHz"
 #elif F_CPU == 8000000L
   #define FREEIMU_FREQ "8 MHz"
+#elif F_CPU == 24000000L
+  #define FREEIMU_FREQ "24 MHz"
 #elif F_CPU == 48000000L
-  #define FREEIMU_FREQ "48 MHz"
+  #define FREEIMU_FREQ "48 MHz" 
 #elif F_CPU == 72000000L
-  #define FREEIMU_FREQ "72 MHz"  
+  #define FREEIMU_FREQ "48 MHz" 
 #else
-  #define FREEIMU_FREQ "Unknown" 
+  #define FREEIMU_FREQ "Not Defined"  
 #endif
 
 
@@ -183,10 +185,10 @@ class FreeIMU
     void calLoad();
     #endif
     void zeroGyro();
-    void getRawValues(int16_t * raw_values);
+    void getRawValues(int * raw_values);
     void getValues(float * values);
     void getQ(float * q);
-	void getQ_simple(float *q);
+	void getQ_simple(float * q);
     void getEuler(float * angles);
     void getYawPitchRoll(float * ypr);
     void getEulerRad(float * angles);

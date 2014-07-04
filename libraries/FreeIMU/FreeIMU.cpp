@@ -306,7 +306,7 @@ void FreeIMU::calLoad() {
 /**
  * Populates raw_values with the raw_values from the sensors
 */
-void FreeIMU::getRawValues(int16_t * raw_values) {
+void FreeIMU::getRawValues(int * raw_values) {
   #if HAS_ITG3200()
     acc.readAccel(&raw_values[0], &raw_values[1], &raw_values[2]);
     gyro.readGyroRaw(&raw_values[3], &raw_values[4], &raw_values[5]);
@@ -345,7 +345,7 @@ void FreeIMU::getRawValues(int16_t * raw_values) {
 */
 void FreeIMU::getValues(float * values) {  
   #if HAS_ITG3200()
-    int16_t accval[3];
+    int accval[3];
     acc.readAccel(&accval[0], &accval[1], &accval[2]);
     values[0] = (float) accval[0];
     values[1] = (float) accval[1];
@@ -394,7 +394,7 @@ void FreeIMU::getValues(float * values) {
 */
 void FreeIMU::zeroGyro() {
   const int totSamples = 3;
-  int16_t raw[11];
+  int raw[11];
   float tmpOffsets[] = {0,0,0};
   
   for (int i = 0; i < totSamples; i++){
