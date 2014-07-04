@@ -20,7 +20,7 @@
 
 
 float q[4];
-int16_t raw_values[9];
+int raw_values[9];
 float ypr[3]; // yaw pitch roll
 char str[256];
 float val[9];
@@ -67,10 +67,10 @@ void loop() {
         #else // MPU6050
           my3IMU.accgyro.getMotion6(&raw_values[0], &raw_values[1], &raw_values[2], &raw_values[3], &raw_values[4], &raw_values[5]);
         #endif
-        writeArr(raw_values, 6, sizeof(int16_t)); // writes accelerometer and gyro values
+        writeArr(raw_values, 6, sizeof(int)); // writes accelerometer and gyro values
         #if IS_9DOM()
           my3IMU.magn.getValues(&raw_values[0], &raw_values[1], &raw_values[2]);
-          writeArr(raw_values, 3, sizeof(int16_t));
+          writeArr(raw_values, 3, sizeof(int));
         #endif
         Serial.println();
       }
@@ -85,7 +85,7 @@ void loop() {
     }
     #ifndef CALIBRATION_H
     else if(cmd == 'c') {
-      const uint8_t eepromsize = sizeof(float) * 6 + sizeof(int16_t) * 6;
+      const uint8_t eepromsize = sizeof(float) * 6 + sizeof(int) * 6;
       while(Serial.available() < eepromsize) ; // wait until all calibration data are received
       EEPROM.write(FREEIMU_EEPROM_BASE, FREEIMU_EEPROM_SIGNATURE);
       for(uint8_t i = 1; i<(eepromsize + 1); i++) {
